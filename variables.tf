@@ -8,12 +8,12 @@ variable "resource_group" {
   default = "khayama-rg"
 }
 variable "region" {
-  default = "jp-tok"
+  default = "eu-de"
 }
 
 variable "vpc_zone_names" {
   type    = list(string)
-  default = ["jp-tok-3"]
+  default = ["eu-de-3"]
 }
 
 locals {
