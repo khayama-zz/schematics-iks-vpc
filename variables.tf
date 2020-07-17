@@ -19,3 +19,13 @@ variable "vpc_zone_names" {
 locals {
   max_size = length(var.vpc_zone_names)
 }
+
+variable "flavor" {
+  default = "bx2.2x8"
+}
+variable "workers_count" {
+  default = 3
+}
+variable "k8s_version" {
+  default = "1.18.4"
+}
