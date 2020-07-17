@@ -10,3 +10,12 @@ variable "resource_group" {
 variable "region" {
   default = "jp-tok"
 }
+
+variable "vpc_zone_names" {
+  type    = list(string)
+  default = ["jp-tok-1", "jp-tok-2", "jp-tok-3"]
+}
+
+locals {
+  max_size = length(var.vpc_zone_names)
+}
