@@ -17,7 +17,7 @@ resource "ibm_is_subnet" "iac_iks_subnet" {
   vpc                      = ibm_is_vpc.iac_iks_vpc.id
   resource_group           = data.ibm_resource_group.group.id
   ipv4_cidr_block          = "192.168.250.0/24"
-  depends_on               = ibm_is_vpc_address_prefix.iac_iks_vpc_address_prefix
+  depends_on               = ["ibm_is_vpc_address_prefix.iac_iks_vpc_address_prefix"]
 }
 
 resource "ibm_is_security_group_rule" "iac_iks_security_group_rule_tcp_k8s" {
