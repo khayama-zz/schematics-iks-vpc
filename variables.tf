@@ -13,7 +13,7 @@ variable "region" {
 
 variable "vpc_zone_names" {
   type    = list(string)
-  default = ["jp-tok-1", "jp-tok-2", "jp-tok-3"]
+  default = ["jp-tok-3"]
 }
 
 locals {
