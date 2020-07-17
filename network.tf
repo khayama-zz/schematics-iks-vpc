@@ -2,6 +2,13 @@ resource "ibm_is_vpc" "iac_iks_vpc" {
   name = "${var.project_name}-${var.environment}-vpc"
 }
 
+resource "ibm_is_vpc_address_prefix" "iac_iks_vpc_address_prefix" {
+  name = "${var.project_name}-${var.environment}-vpc-address-prefix-${format("%02s", count.index)}"
+  zone = var.vpc_zone_names[count.index]
+  vpc  = ibm_is_vpc.iac_iks_vpc.id
+  cidr = "192.168.250.0/23"
+}
+
 resource "ibm_is_subnet" "iac_iks_subnet" {
   count                    = local.max_size
   name                     = "${var.project_name}-${var.environment}-subnet-${format("%02s", count.index)}"
