@@ -29,7 +29,7 @@ resource "ibm_is_subnet" "iac_iks_subnet" {
   vpc                      = ibm_is_vpc.iac_iks_vpc.id
   resource_group           = data.ibm_resource_group.group.id
   ipv4_cidr_block          = "192.168.250.0/24"
-  public_gateway           = ibm_is_public_gateway.iac_iks_public_gateway[count.index]
+  public_gateway           = ibm_is_public_gateway.iac_iks_public_gateway[count.index].id
   depends_on               = [ibm_is_vpc_address_prefix.iac_iks_vpc_address_prefix]
 }
 
