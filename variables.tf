@@ -29,5 +29,5 @@ variable "workers_count" {
   default = [3]
 }
 variable "k8s_version" {
-  default = "1.18.4"
+  default = "1.18.8" # To list supported versions, run 'ibmcloud ks versions'
 }
