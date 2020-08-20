@@ -1,5 +1,6 @@
 resource "ibm_is_vpc" "iac_iks_vpc" {
   name = "${var.project_name}-${var.environment}-vpc"
+  resource_group_id = data.ibm_resource_group.group.id
 }
 
 resource "ibm_is_vpc_address_prefix" "iac_iks_vpc_address_prefix" {
