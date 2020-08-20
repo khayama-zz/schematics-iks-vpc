@@ -5,6 +5,15 @@ resource "ibm_is_vpc" "iac_iks_vpc" {
   tags                      = ["owner:${var.project_name}"]
 }
 
+resource "ibm_is_public_gateway" "iac_iks_public_gateway" {
+    count          = local.max_size
+    name           = "${var.project_name}-${var.environment}-public-gateway"
+    zone           = var.vpc_zone_names[count.index]
+    vpc            = ibm_is_vpc.iac_iks_vpc.id
+    resource_group = data.ibm_resource_group.group.id
+    tags           = ["owner:${var.project_name}"]
+}
+
 resource "ibm_is_vpc_address_prefix" "iac_iks_vpc_address_prefix" {
   count                    = local.max_size
   name                     = "${var.project_name}-${var.environment}-vpc-address-prefix-${format("%02s", count.index + 1)}"
@@ -20,6 +29,7 @@ resource "ibm_is_subnet" "iac_iks_subnet" {
   vpc                      = ibm_is_vpc.iac_iks_vpc.id
   resource_group           = data.ibm_resource_group.group.id
   ipv4_cidr_block          = "192.168.250.0/24"
+  public_gateway           = ibm_is_public_gateway.iac_iks_public_gateway.id
   depends_on               = [ibm_is_vpc_address_prefix.iac_iks_vpc_address_prefix]
 }
 
