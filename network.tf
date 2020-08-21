@@ -7,10 +7,13 @@ resource "ibm_is_vpc" "iac_iks_vpc" {
   provisioner "local-exec" {
     command =<<EOT
       vpc_api_endpoint  = https://${var.region}.iaas.cloud.ibm.com
-      security_group_id = 
-      curl -X PATCH "$vpc_api_endpoint/v1/security_groups/$security_group_id?version=2020-08-11&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name": "${var.project_name}-${var.environment}-vpc-default-security-group" }'
-      network_acl_id    = 
-      curl -X PATCH "$vpc_api_endpoint/v1/network_acls/$network_acl_id?version=2020-08-11&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name":"${var.project_name}-${var.environment}-vpc-default-network-acl" }'
+      echo $vpc_api_endpoint
+      security_group_id = $(curl -X GET "$vpc_api_endpoint/v1/vpcs?version=2020-08-20&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" | jq -r '.vpcs | .[] | select (.name=="${var.project_name}-${var.environment}-vpc") | .default_security_group.id')
+      echo $security_group_id
+      curl -X PATCH "$vpc_api_endpoint/v1/security_groups/$security_group_id?version=2020-08-20&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name": "${var.project_name}-${var.environment}-vpc-default-security-group" }'
+      network_acl_id    = $(curl -X GET "$vpc_api_endpoint/v1/vpcs?version=2020-08-20&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" | jq -r '.vpcs | .[] | select (.name=="${var.project_name}-${var.environment}-vpc") | .default_network_acl.id')
+      echo $network_acl_id
+      curl -X PATCH "$vpc_api_endpoint/v1/network_acls/$network_acl_id?version=2020-08-20&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name":"${var.project_name}-${var.environment}-vpc-default-network-acl" }'
     EOT
   }
 }
