@@ -12,4 +12,5 @@
   "template_data": [{
     "folder": ".",
     "type": "terraform_v0.12"
+  }]
 }
