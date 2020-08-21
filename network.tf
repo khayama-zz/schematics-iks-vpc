@@ -3,6 +3,16 @@ resource "ibm_is_vpc" "iac_iks_vpc" {
   resource_group            = data.ibm_resource_group.group.id
   address_prefix_management = "manual"
   tags                      = ["owner:${var.project_name}"]
+  
+  provisioner "local-exec" {
+    command =<<EOT
+      vpc_api_endpoint  = https://${var.region}.iaas.cloud.ibm.com
+      security_group_id = 
+      curl -X PATCH "$vpc_api_endpoint/v1/security_groups/$security_group_id?version=2020-08-11&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name": "${var.project_name}-${var.environment}-vpc-default-security-group" }'
+      network_acl_id    = 
+      curl -X PATCH "$vpc_api_endpoint/v1/network_acls/$network_acl_id?version=2020-08-11&generation=2" -H "Authorization: Bearer $IC_IAM_TOKEN" -d '{ "name":"${var.project_name}-${var.environment}-vpc-default-network-acl" }'
+    EOT
+  }
 }
 
 resource "ibm_is_public_gateway" "iac_iks_public_gateway" {
